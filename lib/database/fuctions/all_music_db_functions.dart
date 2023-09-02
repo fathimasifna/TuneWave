@@ -2,6 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_player/database/model/data_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+List<SongsModel> allSongsData=[];
 abstract class AllMusicDBFunctions {
   Future<void> createMusicBox();
   Future<void> fetchAndAddMusicToBox();
@@ -19,6 +20,12 @@ class AllMusicFunctions implements AllMusicDBFunctions {
     return await Hive.openBox<SongsModel>('music_box');
   }
 
+  Future<void> updateRecentlyPlayed(SongsModel song) async {
+  final recentBox = Hive.box<SongsModel>('recent_box');
+  await recentBox.add(song);
+}
+
+
   @override
   Future<void> fetchAndAddMusicToBox() async {
     final OnAudioQuery onAudioQuery = OnAudioQuery();
@@ -28,8 +35,9 @@ class AllMusicFunctions implements AllMusicDBFunctions {
       uriType: UriType.EXTERNAL,
       ignoreCase: true,
     );
-
+  
     final musicBox = await createMusicBox();
+     
     await musicBox.clear();
     await musicBox.addAll(musicList.asMap().entries.map((entry) => SongsModel(
           id: entry.key,
@@ -37,5 +45,12 @@ class AllMusicFunctions implements AllMusicDBFunctions {
           subtitle: entry.value.artist,
           audioUri: entry.value.uri, name: '',
         )));
+         allSongsData.addAll(musicBox.values.toList());
   }
+
+  getAllMusicFromDatabase(){
+  
+  }    
+
+
 }

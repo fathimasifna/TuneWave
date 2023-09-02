@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 part 'playlist_model.g.dart';
 
-@HiveType(typeId: 0)
-class SongModel extends HiveObject {
+@HiveType(typeId: 2)
+class PlayListModel extends HiveObject {
   @HiveField(0)
   int? id;
 
@@ -18,7 +18,7 @@ class SongModel extends HiveObject {
   @HiveField(4)
   late String? title;
 
-  SongModel({
+  PlayListModel({
     required this.name,
     required this.subtitle,
     this.id,
@@ -27,13 +27,13 @@ class SongModel extends HiveObject {
   });
 
   // Copy constructor for renaming a song
-  SongModel copyWith({
+  PlayListModel copyWith({
     String? name,
     String? subtitle,
     String? audioUri,
     String? title,
   }) {
-    return SongModel(
+    return PlayListModel(
       name: name ?? this.name,
       subtitle: subtitle ?? this.subtitle,
       audioUri: audioUri ?? this.audioUri,

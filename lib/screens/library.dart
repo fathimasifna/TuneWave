@@ -40,7 +40,7 @@ class LibraryScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>   FavoriteScreen(favoriteSongs: const [], updateFavoriteStatus: (int songId, bool isFavorite) {  },),
+                      builder: (context) =>   FavoriteScreen( updateFavoriteStatus: (int songId, bool isFavorite) {  },),
                     ),
                   );
                 },
@@ -49,7 +49,7 @@ class LibraryScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FavoriteScreen(favoriteSongs: const [], updateFavoriteStatus: (int songId, bool isFavorite) {  },),  
+                    builder: (context) => FavoriteScreen( updateFavoriteStatus: (int songId, bool isFavorite) {  },),  
                   ),
                 );
               },
@@ -72,7 +72,7 @@ class LibraryScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  PlayListScreen(),
+                      builder: (context) =>const PlaylistScreen(),
                     ),
                   );
                 },
@@ -81,7 +81,7 @@ class LibraryScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>   PlayListScreen(),
+                    builder: (context) =>   const PlaylistScreen(),
                   ),
                 );
               },

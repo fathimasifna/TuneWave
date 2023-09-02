@@ -3,30 +3,27 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:music_player/database/fuctions/all_music_db_functions.dart';
 import 'package:music_player/database/model/data_model.dart';
 import 'package:music_player/playlist/playlist_model.dart';
+import 'package:music_player/recentlyplayed/recent_model.dart';
 import 'package:music_player/screens/splash.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-// import 'package:just_audio/just_audio.dart';
-// import 'package:just_audio_background/just_audio_background.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  if (!Hive.isAdapterRegistered(0)) {
+  
+  if (!Hive.isAdapterRegistered(SongsModelAdapter().typeId)) {
     Hive.registerAdapter(SongsModelAdapter());
-    Hive.openBox<SongsModel>('music_box');
-     Hive.openBox<SongsModel>('favorite_songs_box');
-     Hive.openBox<SongModel>('playlistDb');
-
-     
-
   }
+   if (!Hive.isAdapterRegistered(RecentListModelAdapter().typeId)) {
+    Hive.registerAdapter(RecentListModelAdapter());
+  }
+    await Hive.openBox<SongsModel>('music_box');
+    await Hive.openBox<SongsModel>('favorite_songs');
+    await Hive.openBox<PlayListModel>('playlistDb');
+    await Hive.openBox<RecentListModel>('recent_box');
 
-  // await JustAudioBackground.init(
-  //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
-  //   androidNotificationChannelName: 'Audio playback',
-  //   androidNotificationOngoing: true,
-  // );
+  
 
   final permissionStatus = await Permission.storage.status;
 

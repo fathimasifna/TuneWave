@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/mostlyplayed/most_played.dart';
+import 'package:music_player/recentlyplayed/recently_played.dart';
 import 'package:music_player/screens/all_music.dart';
-
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _audioQuery = OnAudioQuery();
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
         await Permission.storage.request();
       }
     } catch (e) {
-      // ignore: avoid_print
       print('Error requesting permission $e');
     }
   }
@@ -39,104 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black87,
         elevation: 0,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 220),
-            child: Text(
-              "TuneWave",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
+        title: const Text(
+          "TuneWave",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
           ),
-          Padding(
-            padding: EdgeInsets.only(right: 12),
-          ),
-        ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 20, top: 10),
-              child: Text(
-                "Recently Played",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.all(10),
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.black87,
-                    ),
-                    child: Image.asset(
-                      'assets/images/home.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 18),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                "Mostly Played",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.all(10),
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.black87,
-                    ),
-                    child: Image.asset(
-                      'assets/images/home.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 13, left: 20),
-              child: Text(
-                "Your Songs",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            _buildExpansionTile("Recently Played", "assets/images/home.jpg",const RecentlyPlayedScreen ()),
+            _buildExpansionTile("Mostly Played", "assets/images/home.jpg",  MostPlayedScreen ()),
+            _buildSectionHeader("Your Songs"),  
             const SizedBox(
               height: 500,
               width: double.maxFinite,
@@ -145,6 +63,72 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  _buildExpansionTile(String title, String imageAsset, Widget page) {
+  return ExpansionTile(
+    title: Text(
+      title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    ),
+    iconColor: Colors.white, 
+    collapsedIconColor: Colors.white,  
+    children: [
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => page),
+          );
+        },
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          width: 150,
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.black87,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Image.asset(
+                imageAsset,
+                fit: BoxFit.scaleDown,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 13, left: 20),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     );

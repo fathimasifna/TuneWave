@@ -145,20 +145,20 @@ class _SongScreenState extends State<SongScreen> {
               ),
               Column(
                 children: [
-                  // IconButton(
-                  //   onPressed: () {
-                  //     toggleFavorite(widget.songModel);
-                  //   },
-                  //   icon: Icon(
-                  //     widget.songModel.isFavorite
-                  //         ? Icons.favorite
-                  //         : Icons.favorite_border,
-                  //     color: widget.songModel.isFavorite
-                  //         ? Colors.red
-                  //         : Colors.white60,
-                  //     size: 35,
-                  //   ),
-                  // ),
+                  IconButton(
+                    onPressed: () {
+                      toggleFavorite(widget.songModel);
+                    },
+                    icon: Icon(
+                      widget.songModel.isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: widget.songModel.isFavorite
+                          ? Colors.red
+                          : Colors.white60,
+                      size: 35,
+                    ),
+                  ),
                   SizedBox(
                     height: 40,
                     child:SingleChildScrollView(
@@ -292,7 +292,7 @@ class _SongScreenState extends State<SongScreen> {
                 ),
               ),
             ],
-          ),
+          ), 
         ),
       ),
     );

@@ -1,193 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/playlist/playlist_model.dart';
 
-import 'dbfunction_playlist.dart';
+import 'dbfunction_playlist.dart'; // Make sure to import your data model and PlaylistDb class
 
-class PlayListScreen extends StatelessWidget {
+class PlaylistScreen extends StatefulWidget {
+  const PlaylistScreen({super.key});
+
+  @override
+  _PlaylistScreenState createState() => _PlaylistScreenState();
+}
+
+class _PlaylistScreenState extends State<PlaylistScreen> {
+  final TextEditingController _newPlaylistController = TextEditingController();
+  final TextEditingController _renameSongController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Playlists"),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
+        title: const Text('Playlist Screen'),
       ),
-      body: PlaylistContent(),
-    );
-  }
-}
-
-class PlaylistContent extends StatefulWidget {
-  @override
-  _PlaylistContentState createState() => _PlaylistContentState();
-}
-
-class _PlaylistContentState extends State<PlaylistContent> {
-  @override
-  void initState() {
-    super.initState();
-    PlaylistDb.getAllPlaylist();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color.fromARGB(255, 40, 32, 51),
-      child: Column(
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                _showCreatePlaylistDialog(context);
-              },
-              child: const Text('Create Playlist'),
+            child: TextField(
+              controller: _newPlaylistController,
+              decoration: const InputDecoration(labelText: 'New Playlist Name'),
             ),
           ),
-          ValueListenableBuilder<List<SongModel>>(
-            valueListenable: PlaylistDb.playlistNotifier,
-            builder: (context, playlist, _) {
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: playlist.length,
-                  itemBuilder: (context, index) {
-                    return _buildPlaylistItem(context, playlist[index], index);
-                  },
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlaylistItem(BuildContext context, SongModel song, int index) {
-    return ListTile(
-      title: Text(song.name!),
-      subtitle: Text(song.subtitle!),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(Icons.edit),
+          ElevatedButton(
             onPressed: () {
-              _renamePlaylist(context, index);
+              final newPlaylistName = _newPlaylistController.text;
+              if (newPlaylistName.isNotEmpty) {
+                final newPlaylist = PlayListModel(
+                  name: newPlaylistName,
+                  subtitle: 'Subtitle',
+                  title: 'Title',
+                );
+                PlaylistDb.addPlaylist(newPlaylist);
+                _newPlaylistController.clear();
+              }
             },
+            child: const Text('Add Playlist'),
           ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () async {
-              _deletePlaylist(index);
-            },
+          const SizedBox(height: 16.0),
+          Expanded(
+            child: ValueListenableBuilder<List<PlayListModel>>(
+              valueListenable: PlaylistDb.playlistNotifier,
+              builder: (context, playlists, _) {
+                return ListView.builder(
+                  itemCount: playlists.length,
+                  itemBuilder: (context, index) {
+                    final playlist = playlists[index];
+                    return ListTile(
+                      title: Text(playlist.name ?? ''),
+                      subtitle: Text(playlist.subtitle ?? ''),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          PlaylistDb.deletePlaylist(index);
+                        },
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Rename Song'),
+                              content: TextField(
+                                controller: _renameSongController,
+                                decoration:
+                                    const InputDecoration(labelText: 'New Title'),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    final newTitle =
+                                        _renameSongController.text;
+                                    if (newTitle.isNotEmpty) {
+                                      PlaylistDb.renameSong(
+                                          index, newTitle);
+                                      _renameSongController.clear();
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  child: const Text('Rename'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
     );
-  }
-
-  void _showCreatePlaylistDialog(BuildContext context) async {
-    final TextEditingController _nameController = TextEditingController();
-    final TextEditingController _subtitleController = TextEditingController();
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Create Playlist'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(controller: _nameController, decoration: InputDecoration(labelText: 'Name')),
-              TextField(controller: _subtitleController, decoration: InputDecoration(labelText: 'Subtitle')),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                final name = _nameController.text;
-                final subtitle = _subtitleController.text;
-                if (name.isNotEmpty && subtitle.isNotEmpty) {
-                  final newPlaylist = SongModel(
-                    name: name,
-                    subtitle: subtitle,
-                    title: name,
-                  );
-                  await PlaylistDb.addPlaylist(newPlaylist);
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playlist created successfully')));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter a valid name and subtitle')));
-                }
-              },
-              child: Text('Create'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _renamePlaylist(BuildContext context, int index) async {
-    final TextEditingController controller =
-        TextEditingController(text: PlaylistDb.playlistNotifier.value[index].name);
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Rename Playlist'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(controller: controller, decoration: const InputDecoration(labelText: 'New Name'),
-              
-              
-              
-              ),
-              
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                final newName = controller.text;
-                if (newName.isNotEmpty) {
-                  await PlaylistDb.renameSong(index, newName);
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playlist renamed successfully')));
-                }
-              },
-              child: Text('Rename'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _deletePlaylist(int index) async {
-    await PlaylistDb.deletePlaylist(index);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playlist deleted successfully')));
   }
 }

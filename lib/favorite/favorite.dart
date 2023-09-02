@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:music_player/database/model/data_model.dart';
+import 'package:music_player/favorite/favorite_dbfunction.dart';
 import 'package:music_player/screens/song_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
-  final List<SongsModel> favoriteSongs;
   final Function(int songId, bool isFavorite) updateFavoriteStatus;
 
   const FavoriteScreen({
-    required this.favoriteSongs,
     required this.updateFavoriteStatus,
     Key? key,
   }) : super(key: key);
@@ -18,9 +16,18 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+  Set<SongsModel> favoriteSongsSet = Set.from([]);
+
+  @override
+  void initState() {
+    super.initState();
+    favoriteSongsSet = Set.from(favoriteSongsDatas);
+  }
+
   void removeFromFavorites(SongsModel song) async {
+    Favorite favoriteObj = Favorite();
     setState(() {
-      widget.favoriteSongs.remove(song);
+      favoriteSongsSet.remove(song);
     });
 
     final snackBar = SnackBar(
@@ -32,10 +39,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         textColor: Colors.white,
         onPressed: () {
           setState(() {
-            widget.favoriteSongs.add(song);
+            favoriteSongsSet.add(song);
           });
           widget.updateFavoriteStatus(song.id!, true);
-          _addToFavoriteBox(song); // Add song back to favorites
+          favoriteObj.addToFavorite(song);
         },
       ),
     );
@@ -43,18 +50,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
     widget.updateFavoriteStatus(song.id!, false);
-    _removeFromFavoriteBox(song); 
+    favoriteObj.deleteFavSongsFromDatabase(song);
   }
 
-  void _addToFavoriteBox(SongsModel song) {
-    final favoriteBox = Hive.box<SongsModel>('favorite_songs_box');
-    favoriteBox.put(song.id, song);
-  }
-
-  void _removeFromFavoriteBox(SongsModel song) {
-    final favoriteBox = Hive.box<SongsModel>('favorite_songs_box');
-    favoriteBox.delete(song.id);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,41 +74,44 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       body: Container(
         color: const Color.fromARGB(255, 40, 32, 51),
         child: ListView.builder(
-          itemCount: widget.favoriteSongs.length,
-          itemBuilder: (context, index) => ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SongScreen(
-                    songModel: widget.favoriteSongs[index],
-                    musicList: widget.favoriteSongs,
+          itemCount: favoriteSongsSet.length,
+          itemBuilder: (context, index) {
+            final song = favoriteSongsSet.elementAt(index);
+            return ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SongScreen(
+                      songModel: song,
+                      musicList: favoriteSongsSet.toList(),
+                    ),
                   ),
-                ),
-              );
-            },
-            leading: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/home.jpg'),
-              radius: 30,
-            ),
-            title: Text(
-              widget.favoriteSongs[index].title ?? '',
-              style: const TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              widget.favoriteSongs[index].subtitle ?? '',
-              style: const TextStyle(color: Colors.white),
-            ),
-            trailing: IconButton(
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.red,
-              ),
-              onPressed: () {
-                removeFromFavorites(widget.favoriteSongs[index]);
+                );
               },
-            ),
-          ),
+              leading: const CircleAvatar(
+                backgroundImage: AssetImage('assets/images/home.jpg'),
+                radius: 30,
+              ),
+              title: Text(
+                song.title ?? '',
+                style: const TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                song.subtitle ?? '',
+                style: const TextStyle(color: Colors.white),
+              ),
+              trailing: IconButton(
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  removeFromFavorites(song);
+                },
+              ),
+            );
+          },
         ),
       ),
     );

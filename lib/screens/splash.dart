@@ -1,7 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:music_player/screens/bottomnavigation.dart';
+
+import '../favorite/favorite_dbfunction.dart';
 
 class SplashScreaan extends StatefulWidget {
   const SplashScreaan({super.key});
@@ -13,7 +14,9 @@ class SplashScreaan extends StatefulWidget {
 class _SplashScreaanState extends State<SplashScreaan> {
   @override
   void initState() {
-    super.initState();      
+    super.initState();
+    Favorite favoriteObj=Favorite();
+    favoriteObj.getFavorSongs();      
     _navigatetohome();
   }
 

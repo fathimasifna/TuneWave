@@ -1,43 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'playlist_model.dart';
+part of 'recent_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PlayListModelAdapter extends TypeAdapter<PlayListModel> {
+class RecentListModelAdapter extends TypeAdapter<RecentListModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 1;
 
   @override
-  PlayListModel read(BinaryReader reader) {
+  RecentListModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PlayListModel(
-      name: fields[1] as String?,
-      subtitle: fields[2] as String?,
+    return RecentListModel(
+      subtitle: fields[1] as String?,
       id: fields[0] as int?,
-      audioUri: fields[3] as String?,
-      title: fields[4] as String?,
+      audioUri: fields[2] as String?,
+      title: fields[3] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PlayListModel obj) {
+  void write(BinaryWriter writer, RecentListModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
       ..write(obj.subtitle)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.audioUri)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.title);
   }
 
@@ -47,7 +44,7 @@ class PlayListModelAdapter extends TypeAdapter<PlayListModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PlayListModelAdapter &&
+      other is RecentListModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,19 +1,24 @@
 import 'package:hive/hive.dart';
-part 'data_model.g.dart';
+    part 'data_model.g.dart';
 
 @HiveType(typeId: 0)
-class SongsModel extends HiveObject {
+class SongsModel{
   @HiveField(0)
   int? id;
+  
   @HiveField(1)
-  late final String? title;
+  final String? title;
+  
   @HiveField(2)
   final String? subtitle;
+  
   @HiveField(3)
   bool isFavorite;
+  
   @HiveField(4) 
   final String? audioUri;
-   @HiveField(5) 
+  
+  @HiveField(5) 
   final String? imageUri;
   
 
@@ -23,7 +28,8 @@ class SongsModel extends HiveObject {
     this.id,
     this.isFavorite = false,
     this.audioUri, 
-    this.imageUri, required String name
+    this.imageUri, 
+    required String name, 
   });
 
   get name => null;

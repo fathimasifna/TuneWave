@@ -1,44 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'playlist_model.dart';
+part of 'most_played_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PlayListModelAdapter extends TypeAdapter<PlayListModel> {
+class MostPlayedModelAdapter extends TypeAdapter<MostPlayedModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  PlayListModel read(BinaryReader reader) {
+  MostPlayedModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PlayListModel(
-      name: fields[1] as String?,
-      subtitle: fields[2] as String?,
-      id: fields[0] as int?,
-      audioUri: fields[3] as String?,
-      title: fields[4] as String?,
-    );
+    return MostPlayedModel(
+      subtitle: fields[1] as String?,
+      title: fields[0] as String,
+      uri: fields[2] as String,
+    )
+      ..isFavorite = fields[3] as bool
+      ..playCount = fields[4] as int;
   }
 
   @override
-  void write(BinaryWriter writer, PlayListModel obj) {
+  void write(BinaryWriter writer, MostPlayedModel obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
       ..write(obj.subtitle)
+      ..writeByte(2)
+      ..write(obj.uri)
       ..writeByte(3)
-      ..write(obj.audioUri)
+      ..write(obj.isFavorite)
       ..writeByte(4)
-      ..write(obj.title);
+      ..write(obj.playCount);
   }
 
   @override
@@ -47,7 +47,7 @@ class PlayListModelAdapter extends TypeAdapter<PlayListModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PlayListModelAdapter &&
+      other is MostPlayedModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
