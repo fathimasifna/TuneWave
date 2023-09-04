@@ -17,12 +17,11 @@ class MostPlayedModelAdapter extends TypeAdapter<MostPlayedModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MostPlayedModel(
-      subtitle: fields[1] as String?,
-      title: fields[0] as String,
-      uri: fields[2] as String,
-    )
-      ..isFavorite = fields[3] as bool
-      ..playCount = fields[4] as int;
+      id: fields[0] as int?,
+      subtitle: fields[2] as String?,
+      title: fields[1] as String,
+      uri: fields[3] as String,
+    )..playCount = fields[4] as int;
   }
 
   @override
@@ -30,13 +29,13 @@ class MostPlayedModelAdapter extends TypeAdapter<MostPlayedModel> {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.subtitle)
+      ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.uri)
+      ..write(obj.subtitle)
       ..writeByte(3)
-      ..write(obj.isFavorite)
+      ..write(obj.uri)
       ..writeByte(4)
       ..write(obj.playCount);
   }

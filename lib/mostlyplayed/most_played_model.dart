@@ -6,21 +6,23 @@ part 'most_played_model.g.dart';
 @HiveType(typeId: 3)
 class MostPlayedModel extends HiveObject {
   @HiveField(0)
+  int? id;
+  @HiveField(1)
   late String title;
 
-  @HiveField(1)
+  @HiveField(2)
   String? subtitle;
 
-  @HiveField(2)
+  @HiveField(3)
   late String uri;
 
-  @HiveField(3)
-  bool isFavorite = false;
+
 
   @HiveField(4)
   int playCount = 0;
 
   MostPlayedModel({
+    this.id,
     this.subtitle,
     required this.title,
     required this.uri,

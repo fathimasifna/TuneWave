@@ -54,18 +54,17 @@ class _AllMusicState extends State<AllMusic> {
       );
     } else {
       await favorite.deleteFavSongsFromDatabase(song);
-      // _removeFromFavoriteBox(song);
       favoriteSongs.removeWhere((favSong) => favSong.id == song.id);
 
       // ignore: use_build_context_synchronously
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => FavoriteScreen(
-            updateFavoriteStatus: updateFavoriteStatus,
-          ),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => FavoriteScreen(
+      //       updateFavoriteStatus: updateFavoriteStatus,
+      //     ),
+      //   ),
+      // );
     }
   }
 

@@ -53,8 +53,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     favoriteObj.deleteFavSongsFromDatabase(song);
   }
 
-
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +72,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       ),
       body: Container(
         color: const Color.fromARGB(255, 40, 32, 51),
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: favoriteSongsSet.length,
           itemBuilder: (context, index) {
             final song = favoriteSongsSet.elementAt(index);
@@ -95,11 +94,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ),
               title: Text(
                 song.title ?? '',
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white54),
               ),
               subtitle: Text(
                 song.subtitle ?? '',
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white54),
               ),
               trailing: IconButton(
                 icon: const Icon(
@@ -110,6 +109,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   removeFromFavorites(song);
                 },
               ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const Divider(
+              color: Colors.white,
+              thickness: 0.8,
             );
           },
         ),

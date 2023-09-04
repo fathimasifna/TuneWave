@@ -38,7 +38,7 @@ class _SongScreenState extends State<SongScreen> {
       print('Error on playing Songs: $e');
     }
   }
-
+           
   void playNextSong() {
     final currentIndex = widget.musicList.indexOf(widget.songModel);
     final nextIndex = (currentIndex + 1) % widget.musicList.length;
@@ -149,7 +149,7 @@ class _SongScreenState extends State<SongScreen> {
                     onPressed: () {
                       toggleFavorite(widget.songModel);
                     },
-                    icon: Icon(
+                    icon: Icon( 
                       widget.songModel.isFavorite
                           ? Icons.favorite
                           : Icons.favorite_border,

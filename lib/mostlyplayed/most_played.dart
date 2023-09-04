@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_player/mostlyplayed/most_played_model.dart';
 
+
 class MostPlayedScreen extends StatelessWidget {
+  const MostPlayedScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Most Played"),
+        title: const Text("Most Played"),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
@@ -16,7 +19,7 @@ class MostPlayedScreen extends StatelessWidget {
         builder: (context, box, _) {
           final musicList = box.values.toList();
 
-           musicList.sort((a, b) => (b.playCount ?? 0).compareTo(a.playCount ?? 0));
+          musicList.sort((a, b) => b.playCount.compareTo(a.playCount));
 
           return ListView.builder(
             itemCount: musicList.length,
@@ -25,8 +28,15 @@ class MostPlayedScreen extends StatelessWidget {
 
               return ListTile(
                 onTap: () {
-                  // Handle tapping on a most played song.
-                  // Implement your song playback logic here.
+                  //  Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => SongScreen(
+                  //       songModel: song,
+                  //       musicList: recentlyPlayedNotifier, 
+                  //     ),
+                  //   ),
+                  // );
                 },
                 leading: const CircleAvatar(
                   backgroundImage: AssetImage('assets/images/home.jpg'),
@@ -35,7 +45,7 @@ class MostPlayedScreen extends StatelessWidget {
                 title: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Text(
-                    song.title ?? '',
+                    song.title,
                     style: const TextStyle(
                       color: Color.fromARGB(255, 209, 207, 207),
                       fontWeight: FontWeight.bold,
@@ -47,29 +57,6 @@ class MostPlayedScreen extends StatelessWidget {
                   song.subtitle ?? '',
                   style: const TextStyle(color: Colors.white),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.favorite,
-                        color: song.isFavorite ? Colors.red : Colors.grey,
-                      ),
-                      onPressed: () {
-                        // Toggle favorite status.
-                        // Implement your favorite logic here.
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.playlist_play,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                      },
-                    ),
-                  ],
-                ),
               );
             },
           );
@@ -78,3 +65,4 @@ class MostPlayedScreen extends StatelessWidget {
     );
   }
 }
+

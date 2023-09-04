@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:music_player/database/fuctions/all_music_db_functions.dart';
 import 'package:music_player/database/model/data_model.dart';
+import 'package:music_player/mostlyplayed/most_played_model.dart';
 import 'package:music_player/playlist/playlist_model.dart';
 import 'package:music_player/recentlyplayed/recent_model.dart';
 import 'package:music_player/screens/splash.dart';
@@ -22,7 +23,9 @@ Future<void> main() async {
     await Hive.openBox<SongsModel>('favorite_songs');
     await Hive.openBox<PlayListModel>('playlistDb');
     await Hive.openBox<RecentListModel>('recent_box');
+    await Hive.openBox<MostPlayedModel>('most_played');
 
+   
   
 
   final permissionStatus = await Permission.storage.status;

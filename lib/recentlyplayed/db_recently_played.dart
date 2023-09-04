@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:music_player/database/model/data_model.dart';
 import 'package:music_player/recentlyplayed/recent_model.dart';
+
+import '../database/fuctions/all_music_db_functions.dart';
 
 List<RecentListModel> recentSongsDatas = [];
 
-ValueNotifier<List<RecentListModel>> recentlyPlayedNotifier = ValueNotifier([]);
+ValueNotifier<List<SongsModel>> recentlyPlayedNotifier = ValueNotifier([]);
 
 class Recently {
   final recentMusicDb = Hive.box<RecentListModel>('recent_box');
@@ -19,8 +22,14 @@ class Recently {
   }
 
   getRecentSongs() {
-    recentSongsDatas.clear();
-    recentSongsDatas = recentMusicDb.values.toList();
-    recentlyPlayedNotifier.value = List.from(recentSongsDatas);
-  }
+    recentSongsDatas=recentMusicDb.values.toList();
+    recentlyPlayedNotifier.value.clear();
+    for(var song in recentSongsDatas){
+      for(var element in allSongsData){
+        if(song.id==element.id){
+          recentlyPlayedNotifier.value.add(element);
+        }
+      }
+    }
+    }
 }
