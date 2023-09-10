@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
     part 'recent_model.g.dart';
 
 @HiveType(typeId: 1)
-class RecentListModel extends HiveObject {
+class  RecentListModel extends HiveObject {
   @HiveField(0) 
    int? id;
 
@@ -15,7 +15,7 @@ class RecentListModel extends HiveObject {
   @HiveField(3)
   late String? title;
 
-  RecentListModel({
+    RecentListModel({
     
      this.subtitle,
     this.id,

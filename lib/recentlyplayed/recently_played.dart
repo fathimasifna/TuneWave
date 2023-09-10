@@ -5,7 +5,7 @@ import '../database/model/data_model.dart';
 import '../screens/song_screen.dart';
 
 class RecentlyPlayedScreen extends StatefulWidget {
-  const RecentlyPlayedScreen({super.key});
+  const RecentlyPlayedScreen({Key? key});
 
   @override
   State<RecentlyPlayedScreen> createState() => _RecentlyPlayedScreenState();
@@ -15,8 +15,8 @@ Recently recently = Recently();
 
 class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
   late SongsModel songModel;
-  late  List<SongsModel> musicList;
-  
+  late List<SongsModel> musicList;
+
   @override
   void initState() {
     super.initState();
@@ -25,9 +25,6 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (recentSongsDatas.length > 10) {
-      recentSongsDatas.removeRange(0, recentSongsDatas.length - 10);
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Recently Played"),
@@ -38,10 +35,12 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
       body: ValueListenableBuilder(
         valueListenable: recentlyPlayedNotifier,
         builder: (BuildContext context, recentlyPlayedNotifier, Widget? child) {
+          final List<SongsModel> latestSongs = recentlyPlayedNotifier.reversed.take(10).toList();
+
           return ListView.separated(
-            itemCount: recentlyPlayedNotifier.length,
+            itemCount: latestSongs.length,
             itemBuilder: (context, index) {
-              final song = recentlyPlayedNotifier[recentlyPlayedNotifier.length - 1 - index];
+              final song = latestSongs[index];
 
               return ListTile(
                 leading: const CircleAvatar(
@@ -60,24 +59,23 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
                     color: Colors.white54,
                   ),
                 ),
-                  onTap: () {
-               
-                Navigator.push(
+                onTap: () {
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SongScreen(
                         songModel: song,
-                        musicList: recentlyPlayedNotifier, 
+                        musicList: latestSongs,
                       ),
                     ),
                   );
-                    },
+                },
               );
             },
             separatorBuilder: (context, index) {
               return const Divider(
                 color: Colors.white,
-                thickness:0.08, 
+                thickness: 0.08,
               );
             },
           );

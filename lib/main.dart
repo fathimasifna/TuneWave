@@ -8,28 +8,26 @@ import 'package:music_player/recentlyplayed/recent_model.dart';
 import 'package:music_player/screens/splash.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  
+
   if (!Hive.isAdapterRegistered(SongsModelAdapter().typeId)) {
     Hive.registerAdapter(SongsModelAdapter());
   }
-   if (!Hive.isAdapterRegistered(RecentListModelAdapter().typeId)) {
+  if (!Hive.isAdapterRegistered(RecentListModelAdapter().typeId)) {
     Hive.registerAdapter(RecentListModelAdapter());
   }
-    await Hive.openBox<SongsModel>('music_box');
-    await Hive.openBox<SongsModel>('favorite_songs');
-    await Hive.openBox<PlayListModel>('playlistDb');
-    await Hive.openBox<RecentListModel>('recent_box');
-    await Hive.openBox<MostPlayedModel>('most_played');
-
-   
-  
+  if (!Hive.isAdapterRegistered(MostPlayedModelAdapter().typeId)) {
+    Hive.registerAdapter(MostPlayedModelAdapter());
+  }
+  await Hive.openBox<SongsModel>('music_box');
+  await Hive.openBox<SongsModel>('favorite_songs');
+  await Hive.openBox<PlayListModel>('playlistDb');
+  await Hive.openBox<RecentListModel>('recent_box');
+  await Hive.openBox<MostPlayedModel>('mostlyPlayedBox');
 
   final permissionStatus = await Permission.storage.status;
-
   if (permissionStatus.isDenied) {
     final permissionResult = await Permission.storage.request();
 

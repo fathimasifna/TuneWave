@@ -16,8 +16,6 @@ class MostPlayedModel extends HiveObject {
   @HiveField(3)
   late String uri;
 
-
-
   @HiveField(4)
   int playCount = 0;
 

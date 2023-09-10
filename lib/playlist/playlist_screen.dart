@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/playlist/playlist_model.dart';
-
-import 'dbfunction_playlist.dart'; // Make sure to import your data model and PlaylistDb class
+import 'package:music_player/playlist/dbfunction_playlist.dart';
 
 class PlaylistScreen extends StatefulWidget {
-  const PlaylistScreen({super.key});
+  const PlaylistScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _PlaylistScreenState createState() => _PlaylistScreenState();
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   final TextEditingController _newPlaylistController = TextEditingController();
-  final TextEditingController _renameSongController = TextEditingController();
+  final TextEditingController _renamePlaylistController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,48 +56,58 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     return ListTile(
                       title: Text(playlist.name ?? ''),
                       subtitle: Text(playlist.subtitle ?? ''),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          PlaylistDb.deletePlaylist(index);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              PlaylistDb.deletePlaylist(index);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              _renamePlaylistController.text = playlist.name ?? '';
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Rename Playlist'),
+                                    content: TextField(
+                                      controller: _renamePlaylistController,
+                                      decoration: const InputDecoration(
+                                        labelText: 'New Playlist Name',
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          final newPlaylistName =
+                                              _renamePlaylistController.text;
+                                          if (newPlaylistName.isNotEmpty) {
+                                            PlaylistDb.renamePlaylist(
+                                                index, newPlaylistName);
+                                            _renamePlaylistController.clear();
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: const Text('Rename'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Rename Song'),
-                              content: TextField(
-                                controller: _renameSongController,
-                                decoration:
-                                    const InputDecoration(labelText: 'New Title'),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    final newTitle =
-                                        _renameSongController.text;
-                                    if (newTitle.isNotEmpty) {
-                                      PlaylistDb.renameSong(
-                                          index, newTitle);
-                                      _renameSongController.clear();
-                                      Navigator.of(context).pop();
-                                    }
-                                  },
-                                  child: const Text('Rename'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
                     );
                   },
                 );

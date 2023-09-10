@@ -3,6 +3,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_player/favorite/favorite_dbfunction.dart';
 import 'package:music_player/database/model/data_model.dart';
+import 'package:music_player/mostlyplayed/most_played_dbfunction.dart';
+import 'package:music_player/mostlyplayed/most_played_model.dart';
 import 'package:music_player/recentlyplayed/recent_model.dart';
 import 'package:music_player/recentlyplayed/recently_played.dart';
 import 'package:music_player/screens/song_screen.dart';
@@ -28,6 +30,7 @@ class _AllMusicState extends State<AllMusic> {
       await audioPlayer.setAudioSource(audioSource);
       audioPlayer.play();
     } catch (e) {
+      // ignore: avoid_print
       print('Error on playing Songs: $e');
     }
   }
@@ -37,8 +40,6 @@ class _AllMusicState extends State<AllMusic> {
       song.isFavorite = !song.isFavorite;
     });
     Favorite favorite = Favorite();
-    // final musicBox = Hive.box<SongsModel>('music_box');
-    // await musicBox.put(song.id, song);
 
     if (song.isFavorite) {
       favorite.addToFavorite(song);
@@ -55,16 +56,6 @@ class _AllMusicState extends State<AllMusic> {
     } else {
       await favorite.deleteFavSongsFromDatabase(song);
       favoriteSongs.removeWhere((favSong) => favSong.id == song.id);
-
-      // ignore: use_build_context_synchronously
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => FavoriteScreen(
-      //       updateFavoriteStatus: updateFavoriteStatus,
-      //     ),
-      //   ),
-      // );
     }
   }
 
@@ -76,16 +67,6 @@ class _AllMusicState extends State<AllMusic> {
     //   addToFavorite(song);
     // }
   }
-
-  // void _addToFavoriteBox(SongsModel song) {
-  //   final favoriteBox = Hive.box<SongsModel>('favorite_songs_box');
-  //   favoriteBox.put(song.id, song);
-  // }
-
-  // void _removeFromFavoriteBox(SongsModel song) {
-  //   final favoriteBox = Hive.box<SongsModel>('favorite_songs_box');
-  //   favoriteBox.delete(song.id);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +98,7 @@ class _AllMusicState extends State<AllMusic> {
                         musicList: musicList,
                       ),
                     ),
-                  );
+                  );  
 
                   final song = RecentListModel(
                     id: musicList[index].id,
@@ -125,10 +106,17 @@ class _AllMusicState extends State<AllMusic> {
                     subtitle: musicList[index].subtitle,
                   );
                   recently.addToRecents(song);
+                  final value = MostPlayedModel(
+                    id: musicList[index].id,
+                      title: musicList[index].title!,
+                      uri: musicList[index].audioUri!,
+                      subtitle: musicList[index].subtitle); 
+                  addMostlyPlayed(value);
+                  getAllPlayed();
                 },
                 leading: const CircleAvatar(
                   backgroundImage: AssetImage('assets/images/home.jpg'),
-                  radius: 30,
+                  radius: 30,     
                 ),
                 title: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

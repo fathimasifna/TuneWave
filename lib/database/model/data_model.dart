@@ -6,7 +6,7 @@ class SongsModel{
   @HiveField(0)
   int? id;
   
-  @HiveField(1)
+  @HiveField(1)                         
   final String? title;
   
   @HiveField(2)

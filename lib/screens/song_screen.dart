@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_player/database/model/data_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+// ignore: must_be_immutable
 class SongScreen extends StatefulWidget {
   SongScreen({Key? key, required this.songModel, required this.musicList})
       : super(key: key);

@@ -35,4 +35,6 @@ class PlaylistDb extends ChangeNotifier {
       getAllPlaylist();
     }
   }
+
+  static void renamePlaylist(int index, String newPlaylistName) {}
 }

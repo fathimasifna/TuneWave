@@ -16,7 +16,7 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  Set<SongsModel> favoriteSongsSet = Set.from([]);
+  Set<SongsModel> favoriteSongsSet = {};
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 style: const TextStyle(color: Colors.white54),
               ),
               subtitle: Text(
-                song.subtitle ?? '',
+                song.subtitle ?? ' ',
                 style: const TextStyle(color: Colors.white54),
               ),
               trailing: IconButton(

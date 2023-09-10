@@ -52,9 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildExpansionTile("Recently Played", "assets/images/home.jpg",const RecentlyPlayedScreen ()),
-            _buildExpansionTile("Mostly Played", "assets/images/home.jpg",  MostPlayedScreen ()),
-            _buildSectionHeader("Your Songs"),  
+            _buildExpansionTile("Recently Played", "assets/images/home.jpg",
+                const RecentlyPlayedScreen()),
+            _buildExpansionTile("Mostly Played", "assets/images/home.jpg",
+                const MostPlayedScreen()),
+            _buildSectionHeader("Your Songs"),
             const SizedBox(
               height: 500,
               width: double.maxFinite,
@@ -68,57 +70,56 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _buildExpansionTile(String title, String imageAsset, Widget page) {
-  return ExpansionTile(
-    title: Text(
-      title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-    ),
-    iconColor: Colors.white, 
-    collapsedIconColor: Colors.white,  
-    children: [
-      GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => page),
-          );
-        },
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.black87,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Image.asset(
-                imageAsset,
-                fit: BoxFit.scaleDown,
-              ),
-            ],
-          ),
+     _buildExpansionTile(String title, String imageAsset, Widget page) {
+    return ExpansionTile(
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
-    ],
-  );
-}
-
+      iconColor: Colors.white,
+      collapsedIconColor: Colors.white,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => page),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            width: 150,
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.black87,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Image.asset(
+                  imageAsset,
+                  fit: BoxFit.scaleDown,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildSectionHeader(String title) {
     return Padding(

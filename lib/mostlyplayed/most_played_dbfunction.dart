@@ -1,35 +1,44 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:hive/hive.dart';
-// import 'package:music_player/database/model/data_model.dart';
-// import 'package:music_player/recentlyplayed/recent_model.dart';
 
-// import '../database/fuctions/all_music_db_functions.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 
-// List<RecentListModel> recentSongsDatas = [];
+import '../database/fuctions/all_music_db_functions.dart';
+import '../database/model/data_model.dart';
+import 'most_played_model.dart';
 
-// ValueNotifier<List<SongsModel>> recentlyPlayedNotifier = ValueNotifier([]);
+final ValueNotifier<List<SongsModel>> mostlyPlayedNotifier = ValueNotifier([]);
+final mostlyBox = Hive.box<MostPlayedModel>('mostlyPlayedBox');
 
-// class Recently {
-//   final recentMusicDb = Hive.box<RecentListModel>('recent_box');
+List<MostPlayedModel> songList = [];
 
-//   addToRecents(RecentListModel song) async {
-//     try {
-//       recentMusicDb.add(song);
-//     } catch (e) {
-//       print(e);
-//     }
-//     getRecentSongs();
-//   }
+Future<void> addMostlyPlayed(MostPlayedModel song) async {
+  int playCount = 1;
 
-//   getRecentSongs() {
-//     recentSongsDatas=recentMusicDb.values.toList();
-//     recentlyPlayedNotifier.value.clear();
-//     for(var song in recentSongsDatas){
-//       for(var element in allSongsData){
-//         if(song.id==element.id){
-//           recentlyPlayedNotifier.value.add(element);
-//         }
-//       }
-//     }
-//     }
-// }
+  playCount = songList.where((element) => element.id == song.id).length + 1;
+
+  songList.add(song);
+  song.playCount = playCount;
+
+  if (playCount > 2 && !mostlyBox.containsKey(song.id)) {
+    mostlyBox.put(song.id, song);
+  }
+
+  await getAllPlayed();
+  mostlyPlayedNotifier.notifyListeners();
+}
+
+getAllPlayed() async {
+  List<MostPlayedModel> songList = [];
+  songList = mostlyBox.values.toSet().toList();
+
+  mostlyPlayedNotifier.value.clear(); 
+
+  for (var song in songList) {
+    for (var element in allSongsData) {
+      if (song.id == element.id) {
+        mostlyPlayedNotifier.value.add(element);
+      }
+    }
+  }
+  mostlyPlayedNotifier.notifyListeners();
+}

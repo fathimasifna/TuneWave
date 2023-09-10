@@ -22,14 +22,14 @@ class Recently {
   }
 
   getRecentSongs() {
-    recentSongsDatas=recentMusicDb.values.toList();
+    recentSongsDatas = recentMusicDb.values.toList();     
     recentlyPlayedNotifier.value.clear();
-    for(var song in recentSongsDatas){
-      for(var element in allSongsData){
-        if(song.id==element.id){
+    for (var song in recentSongsDatas) {
+      for (var element in allSongsData) {
+        if (song.id == element.id) {
           recentlyPlayedNotifier.value.add(element);
         }
       }
     }
-    }
+  }
 }

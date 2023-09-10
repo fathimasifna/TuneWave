@@ -2,21 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 import '../database/model/data_model.dart';
-List<SongsModel>favoriteSongsDatas=[];
-   bool isInitialized = false;
-  
-   ValueNotifier<List<SongsModel>> favoriteSongs = ValueNotifier([]);
 
- 
+List<SongsModel> favoriteSongsDatas = [];
 
- clear() async {
-    favoriteSongs.value.clear();
-  }
- 
+bool isInitialized = false;
 
+ValueNotifier<List<SongsModel>> favoriteSongs = ValueNotifier([]);
 
+clear() async {
+  favoriteSongs.value.clear();
+}
 
- //--Favorite Database Functions--
+//--Favorite Database Functions--
 class Favorite {
   final favoriteMusicDb = Hive.box<SongsModel>('favorite_songs');
 
