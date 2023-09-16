@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/screens/bottomnavigation.dart';
 import '../favorite/favorite_dbfunction.dart';
+import '../mostlyplayed/most_played_dbfunction.dart';
+import '../playlist/dbfunction_playlist.dart';
 
 class SplashScreaan extends StatefulWidget {
   const SplashScreaan({super.key});
@@ -16,6 +18,9 @@ class _SplashScreaanState extends State<SplashScreaan> {
     Favorite favoriteObj = Favorite();
     favoriteObj.getFavorSongs();
     _navigatetohome();
+    getAllPlayed();
+
+    PlaylistDb.getAllPlaylist();
   }
 
   _navigatetohome() async {

@@ -92,10 +92,17 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 backgroundImage: AssetImage('assets/images/home.jpg'),
                 radius: 30,
               ),
-              title: Text(
-                song.title ?? '',
-                style: const TextStyle(color: Colors.white54),
-              ),
+              title:SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    song.title ?? '',
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 209, 207, 207),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
               subtitle: Text(
                 song.subtitle ?? ' ',
                 style: const TextStyle(color: Colors.white54),

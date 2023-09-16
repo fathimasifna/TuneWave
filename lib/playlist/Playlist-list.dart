@@ -1,28 +1,39 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:music_player/database/model/data_model.dart';
-import 'package:music_player/mostlyplayed/most_played_dbfunction.dart';
-import 'package:music_player/screens/song_screen.dart';
+import 'package:music_player/playlist/add_songs_to_playlist.dart/db_functions_add_song_to_playlist.dart';
 
-import 'most_played_model.dart';
+import '../database/model/play_list_song_model/playlist_model.dart';
+import '../screens/song_screen.dart';
 
-class MostPlayedScreen extends StatelessWidget {
-  const MostPlayedScreen({Key? key}) : super(key: key);
+
+
+class ListToList extends StatelessWidget {
+  const ListToList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Most Played"),
+        title: const Text("name"),
         centerTitle: true,
         backgroundColor: Colors.black,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
       ),
-      backgroundColor: const Color.fromARGB(255, 40, 32, 51),
-      body: ValueListenableBuilder<List<SongsModel>>(
-        valueListenable: mostlyPlayedNotifier,
+            backgroundColor: const Color.fromARGB(255, 40, 32, 51),
+
+       body: 
+      ValueListenableBuilder<List<PlaylistSongModel>>(
+        valueListenable: AddSongToPlaylist.playlistNotifier,
         builder: (context, musicList, _) {
-          if (musicList.length > 10) {
-            musicList = musicList.sublist(0, 10);
-          }
+      
 
           return ListView.separated( 
             itemCount: musicList.length,
@@ -33,11 +44,19 @@ class MostPlayedScreen extends StatelessWidget {
               );
             },
             itemBuilder: (context, index) {
-              final song = musicList[index];
+              final song = musicList[index].song;
 
               return ListTile(
                 onTap: () {
-                  _handleSongTap(context, song);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SongScreen(
+                        songModel: song, musicList: const [],
+                        
+                      ),
+                    ),
+                  );
                 },
                 leading: const CircleAvatar(
                   backgroundImage: AssetImage('assets/images/home.jpg'),
@@ -67,24 +86,6 @@ class MostPlayedScreen extends StatelessWidget {
             },
           );
         },
-      ),
-    );
-  }
-
-  void _handleSongTap(BuildContext context, SongsModel song) {
-    addMostlyPlayed(MostPlayedModel(
-      id: song.id,
-      title: song.title!,
-      subtitle: song.subtitle,
-      uri: song.audioUri!,
-    ));
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SongScreen(
-          songModel: song,
-          musicList: mostlyPlayedNotifier.value,
-        ),
       ),
     );
   }

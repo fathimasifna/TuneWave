@@ -3,7 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:music_player/database/fuctions/all_music_db_functions.dart';
 import 'package:music_player/database/model/data_model.dart';
 import 'package:music_player/mostlyplayed/most_played_model.dart';
-import 'package:music_player/playlist/playlist_model.dart';
+import 'package:music_player/database/model/play_list_song_model/playlist_model.dart';
 import 'package:music_player/recentlyplayed/recent_model.dart';
 import 'package:music_player/screens/splash.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,9 +21,15 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(MostPlayedModelAdapter().typeId)) {
     Hive.registerAdapter(MostPlayedModelAdapter());
   }
+  if (!Hive.isAdapterRegistered(PlaylistSongModelAdapter().typeId)) {
+    Hive.registerAdapter(PlaylistSongModelAdapter());
+  }
+
   await Hive.openBox<SongsModel>('music_box');
   await Hive.openBox<SongsModel>('favorite_songs');
-  await Hive.openBox<PlayListModel>('playlistDb');
+   
+  await Hive.openBox<String>('playlistDb');
+  await Hive.openBox<PlaylistSongModel>('playlist_songs');
   await Hive.openBox<RecentListModel>('recent_box');
   await Hive.openBox<MostPlayedModel>('mostlyPlayedBox');
 

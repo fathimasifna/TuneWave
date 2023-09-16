@@ -72,7 +72,7 @@ class LibraryScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>const PlaylistScreen(),
+                      builder: (context) => const PlaylistScreen(),
                     ),
                   );
                 },
@@ -81,7 +81,7 @@ class LibraryScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>   const PlaylistScreen(),
+                    builder: (context) =>    const PlaylistScreen(),
                   ),
                 );
               },

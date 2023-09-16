@@ -24,9 +24,11 @@ class _SongScreenState extends State<SongScreen> {
   final AudioPlayer audioPlayer = AudioPlayer();
   Future<void> toggleFavorite(SongsModel song) async {
     setState(() {
-      song.isFavorite = !song.isFavorite;
+        print(song.isFavorite);
+     song.isFavorite = !song.isFavorite;
+     print(song.isFavorite);
     });
-    await Hive.box<SongsModel>('favourite_box').put(song.id, song);
+    await Hive.box<SongsModel>('favorite_songs').put(song.id, song);
   }
 
   Future<void> playSong(String? uri) async {
@@ -147,8 +149,9 @@ class _SongScreenState extends State<SongScreen> {
               Column(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      toggleFavorite(widget.songModel);
+                    onPressed: ()async {
+                      
+                       await toggleFavorite(widget.songModel);
                     },
                     icon: Icon( 
                       widget.songModel.isFavorite

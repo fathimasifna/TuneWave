@@ -1,7 +1,5 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-
 import '../database/fuctions/all_music_db_functions.dart';
 import '../database/model/data_model.dart';
 import 'most_played_model.dart';
@@ -31,7 +29,7 @@ getAllPlayed() async {
   List<MostPlayedModel> songList = [];
   songList = mostlyBox.values.toSet().toList();
 
-  mostlyPlayedNotifier.value.clear(); 
+  mostlyPlayedNotifier.value.clear();
 
   for (var song in songList) {
     for (var element in allSongsData) {

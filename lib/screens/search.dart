@@ -12,7 +12,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-    List<SongsModel> musicList = [];
+  List<SongsModel> musicList = [];
   List<SongsModel> filteredMusicList = [];
   final AudioPlayer audioPlayer = AudioPlayer();
   SongsModel? currentlyPlayingSong;
@@ -32,6 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   // ignore: unused_element
+
   Future<void> _playSong(SongsModel song) async {
     try {
       await audioPlayer.stop();
@@ -39,9 +40,10 @@ class _SearchScreenState extends State<SearchScreen> {
       await audioPlayer.play();
       setState(() {
         currentlyPlayingSong = song;
-      }); 
+      });
     } catch (e) {
       // ignore: avoid_print
+
       print('Error on playing Songs: $e');
     }
   }
@@ -112,12 +114,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     title: Text(
                       song.title!,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white70), 
+                      style: const TextStyle(color: Colors.white70),
                     ),
                     subtitle: Text(
                       song.subtitle!,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white70), 
+                      style: const TextStyle(color: Colors.white70),
                     ),
                     leading: const CircleAvatar(
                       backgroundImage: AssetImage('assets/images/home.jpg'),

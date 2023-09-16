@@ -1,40 +1,34 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:music_player/playlist/playlist_model.dart';
 
-class PlaylistDb extends ChangeNotifier {
-  static ValueNotifier<List<PlayListModel>> playlistNotifier = ValueNotifier([]);
-  static final playlistDb = Hive.box<PlayListModel>('playlistDb');
+class PlaylistDb  {
+  static ValueNotifier<List<String>> playlistNotifier =
+      ValueNotifier([]);
+  static final playlistDb = Hive.box<String>('playlistDb');
 
-  static Future<void> addPlaylist(PlayListModel value) async {
-    final playlistDb = await Hive.openBox<PlayListModel>('playlistDb');
-    playlistDb.add(value);
-    playlistNotifier.value.add(value);
-    playlistNotifier.notifyListeners();
-  }
-
-  static Future<void> getAllPlaylist() async {
-    final playlistDb = await Hive.openBox<PlayListModel>('playlistDb');
-    playlistNotifier.value.clear();
-    playlistNotifier.value.addAll(playlistDb.values);
-    playlistNotifier.notifyListeners();
-  }
-
-  static Future<void> deletePlaylist(int index) async {
-    final playlistDb = await Hive.openBox<PlayListModel>('playlistDb');
-    await playlistDb.deleteAt(index);
+  static Future<void> addPlaylist(String? value) async {
+    playlistDb.put(value,value!);
     getAllPlaylist();
   }
 
-  static Future<void> renameSong(int index, String newTitle) async {
-    final playlistDb = await Hive.openBox<PlayListModel>('playlistDb');
-    final song = playlistDb.getAt(index);
-    if (song != null) {
-      final updatedSong = song.copyWith(title: newTitle);
-      await playlistDb.putAt(index, updatedSong);
-      getAllPlaylist();
-    }
+  static Future<void> getAllPlaylist() async {
+    playlistNotifier.value.clear();
+    playlistNotifier.value.addAll(playlistDb.values);
+    print(playlistNotifier.value);
+    playlistNotifier.notifyListeners();
   }
 
-  static void renamePlaylist(int index, String newPlaylistName) {}
+  static Future<void> deletePlaylist(String? key) async {
+    await playlistDb.delete(key);
+    getAllPlaylist();
+  }
+
+  static Future<void> renameSong(String oldPlaylistName, String newPlaylistName) async {
+    playlistDb.delete(oldPlaylistName);
+    addPlaylist(newPlaylistName);
+  
+
+
+}
+ 
 }

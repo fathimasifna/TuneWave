@@ -35,7 +35,8 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
       body: ValueListenableBuilder(
         valueListenable: recentlyPlayedNotifier,
         builder: (BuildContext context, recentlyPlayedNotifier, Widget? child) {
-          final List<SongsModel> latestSongs = recentlyPlayedNotifier.reversed.take(10).toList();
+          final List<SongsModel> latestSongs =
+              recentlyPlayedNotifier.reversed.take(10).toList();
 
           return ListView.separated(
             itemCount: latestSongs.length,
@@ -47,10 +48,18 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
                   backgroundImage: AssetImage('assets/images/home.jpg'),
                   radius: 30,
                 ),
-                title: Text(
-                  song.title ?? '',
-                  style: const TextStyle(
-                    color: Colors.white54,
+                title: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      song.title ?? '',
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
                   ),
                 ),
                 subtitle: Text(

@@ -20,8 +20,6 @@ class AllMusic extends StatefulWidget {
 
 class _AllMusicState extends State<AllMusic> {
   final AudioPlayer audioPlayer = AudioPlayer();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _newPlaylistController = TextEditingController();
   List<SongsModel> favoriteSongs = [];
 
   Future<void> playSong(String uri) async {
@@ -113,6 +111,7 @@ class _AllMusicState extends State<AllMusic> {
                       subtitle: musicList[index].subtitle); 
                   addMostlyPlayed(value);
                   getAllPlayed();
+                  
                 },
                 leading: const CircleAvatar(
                   backgroundImage: AssetImage('assets/images/home.jpg'),
@@ -159,15 +158,15 @@ class _AllMusicState extends State<AllMusic> {
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.playlist_play,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        newPlayListDialog(context);
-                      },
-                    ),
+                    // IconButton(
+                    //   icon: const Icon(
+                    //     Icons.playlist_play,
+                    //     color: Colors.white,
+                    //   ),
+                    //   onPressed: () {
+                    //     newPlayListDialog(context);
+                    //   },
+                    // ),
                   ],
                 ),
               );
@@ -176,71 +175,71 @@ class _AllMusicState extends State<AllMusic> {
     );
   }
 
-  void newPlayListDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: const Color.fromARGB(255, 158, 158, 158),
-          content: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 8),
-              child: TextFormField(
-                controller: _newPlaylistController,
-                style: const TextStyle(color: Colors.black),
-                cursorColor: Colors.black,
-                decoration: const InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  hintText: 'Enter playlist name',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  fillColor: Colors.white,
-                  filled: true,
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a valid playlist name';
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ),
-          actions: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white54,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text(
-                  'Create',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void newPlayListDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         backgroundColor: const Color.fromARGB(255, 158, 158, 158),
+  //         content: Form(
+  //           key: _formKey,
+  //           child: Padding(
+  //             padding: const EdgeInsets.only(top: 10, bottom: 8),
+  //             child: TextFormField(
+  //               controller: _newPlaylistController,
+  //               style: const TextStyle(color: Colors.black),
+  //               cursorColor: Colors.black,
+  //               decoration: const InputDecoration(
+  //                 enabledBorder: UnderlineInputBorder(
+  //                   borderSide: BorderSide(color: Colors.transparent),
+  //                 ),
+  //                 focusedBorder: UnderlineInputBorder(
+  //                   borderSide: BorderSide(color: Colors.transparent),
+  //                 ),
+  //                 hintText: 'Enter playlist name',
+  //                 hintStyle: TextStyle(color: Colors.grey),
+  //                 fillColor: Colors.white,
+  //                 filled: true,
+  //               ),
+  //               validator: (value) {
+  //                 if (value == null || value.isEmpty) {
+  //                   return 'Please enter a valid playlist name';
+  //                 }
+  //                 return null;
+  //               },
+  //             ),
+  //           ),
+  //         ),
+  //         actions: [
+  //           Container(
+  //             decoration: BoxDecoration(
+  //               color: Colors.white54,
+  //               borderRadius: BorderRadius.circular(5),
+  //             ),
+  //             child: TextButton(
+  //               onPressed: () {
+  //                 if (_formKey.currentState!.validate()) {
+  //                   Navigator.pop(context);
+  //                 }
+  //               },
+  //               child: const Text(
+  //                 'Create',
+  //                 style: TextStyle(color: Colors.black),
+  //               ),
+  //             ),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: const Text(
+  //               'Cancel',
+  //               style: TextStyle(color: Colors.black),
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }
