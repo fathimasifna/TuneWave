@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:music_player/database/model/data_model.dart';

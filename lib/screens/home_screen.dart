@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:music_player/mostlyplayed/most_played.dart';
 import 'package:music_player/recentlyplayed/recently_played.dart';

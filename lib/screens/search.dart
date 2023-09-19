@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:music_player/database/fuctions/all_music_db_functions.dart';
 import 'package:music_player/database/model/data_model.dart';
@@ -33,20 +35,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   // ignore: unused_element
 
-  Future<void> _playSong(SongsModel song) async {
-    try {
-      await audioPlayer.stop();
-      await audioPlayer.setUrl(song.audioUri!);
-      await audioPlayer.play();
-      setState(() {
-        currentlyPlayingSong = song;
-      });
-    } catch (e) {
-      // ignore: avoid_print
-
-      print('Error on playing Songs: $e');
-    }
-  }
 
   void _filterMusicList(String query) {
     if (query.isEmpty) {

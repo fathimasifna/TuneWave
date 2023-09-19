@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/database/model/data_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-// ignore: must_be_immutable
+import '../playlist/playlist_screen.dart';
+
 class SongScreen extends StatefulWidget {
   SongScreen({Key? key, required this.songModel, required this.musicList})
       : super(key: key);
@@ -24,33 +26,44 @@ class _SongScreenState extends State<SongScreen> {
   final AudioPlayer audioPlayer = AudioPlayer();
   Future<void> toggleFavorite(SongsModel song) async {
     setState(() {
-        print(song.isFavorite);
-     song.isFavorite = !song.isFavorite;
-     print(song.isFavorite);
+      song.isFavorite = !song.isFavorite;
     });
-    await Hive.box<SongsModel>('favorite_songs').put(song.id, song);
   }
 
   Future<void> playSong(String? uri) async {
     final audioSource = AudioSource.uri(Uri.parse(uri!));
     try {
       await audioPlayer.setAudioSource(audioSource);
-      audioPlayer.play();
+      audioPlayer.setShuffleModeEnabled(isShuffle);
+      audioPlayer.setLoopMode(loopMode);
+      await audioPlayer.seek(Duration.zero);
+      await audioPlayer.play();
+      setState(() {
+        _isPlaying = true;
+      });
     } catch (e) {
-      // ignore: avoid_print
       print('Error on playing Songs: $e');
     }
   }
-           
-  void playNextSong() {
-    final currentIndex = widget.musicList.indexOf(widget.songModel);
-    final nextIndex = (currentIndex + 1) % widget.musicList.length;
 
-    final nextSong = widget.musicList[nextIndex];
-    setState(() {
-      widget.songModel = nextSong;
-    });
-    playSong(nextSong.audioUri!);
+  void playNextSong() {
+    if (isShuffle) {
+      // If shuffle is enabled, select a random song from the list
+      final randomIndex = Random().nextInt(widget.musicList.length);
+      final nextSong = widget.musicList[randomIndex];
+      setState(() {
+        widget.songModel = nextSong;
+      });
+      playSong(nextSong.audioUri!);
+    } else {
+      final currentIndex = widget.musicList.indexOf(widget.songModel);
+      final nextIndex = (currentIndex + 1) % widget.musicList.length;
+      final nextSong = widget.musicList[nextIndex];
+      setState(() {
+        widget.songModel = nextSong;
+      });
+      playSong(nextSong.audioUri!);
+    }
   }
 
   void playPreviousSong() {
@@ -96,6 +109,29 @@ class _SongScreenState extends State<SongScreen> {
     audioPlayer.stop();
     audioPlayer.dispose();
     super.dispose();
+  }
+
+  bool isShuffle = false;
+  LoopMode loopMode = LoopMode.off;
+
+  void toggleShuffle() {
+    setState(() {
+      isShuffle = !isShuffle;
+    });
+    audioPlayer.setShuffleModeEnabled(isShuffle);
+  }
+
+  void toggleRepeat() {
+    setState(() {
+      if (loopMode == LoopMode.off) {
+        loopMode = LoopMode.one;
+      } else if (loopMode == LoopMode.one) {
+        loopMode = LoopMode.all;
+      } else {
+        loopMode = LoopMode.off;
+      }
+    });
+    audioPlayer.setLoopMode(loopMode);
   }
 
   @override
@@ -148,24 +184,85 @@ class _SongScreenState extends State<SongScreen> {
               ),
               Column(
                 children: [
-                  IconButton(
-                    onPressed: ()async {
-                      
-                       await toggleFavorite(widget.songModel);
-                    },
-                    icon: Icon( 
-                      widget.songModel.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: widget.songModel.isFavorite
-                          ? Colors.red
-                          : Colors.white60,
-                      size: 35,
-                    ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 11),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PlaylistScreen(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.playlist_add,
+                            color: Colors.white54,
+                            size: 35,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: IconButton(
+                            onPressed: toggleShuffle,
+                            icon: isShuffle
+                                ? const Icon(
+                                    Icons.shuffle,
+                                    color: Color.fromARGB(255, 175, 67, 195),
+                                    size: 35,
+                                  )
+                                : const Icon(
+                                    Icons.shuffle,
+                                    color: Colors.white54,
+                                    size: 35,
+                                  ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 11),
+                        child: IconButton(
+                          onPressed: toggleRepeat,
+                          icon: loopMode == LoopMode.off
+                              ? const Icon(
+                                  Icons.replay,
+                                  color: Colors.white54,
+                                  size: 35,
+                                )
+                              : const Icon(
+                                  Icons.replay,
+                                  color: Color.fromARGB(255, 175, 67, 195),
+                                  size: 35,
+                                ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 11),
+                        child: IconButton(
+                          onPressed: () async {
+                            await toggleFavorite(widget.songModel);
+                          },
+                          icon: Icon(
+                            widget.songModel.isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: widget.songModel.isFavorite
+                                ? const Color.fromARGB(255, 175, 67, 195)
+                                : Colors.white54,
+                            size: 35,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 40,
-                    child:SingleChildScrollView(
+                    child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Text(
                         widget.songModel.title ?? '',
@@ -175,7 +272,7 @@ class _SongScreenState extends State<SongScreen> {
                           fontSize: 25,
                         ),
                       ),
-                    ), 
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -296,7 +393,7 @@ class _SongScreenState extends State<SongScreen> {
                 ),
               ),
             ],
-          ), 
+          ),
         ),
       ),
     );

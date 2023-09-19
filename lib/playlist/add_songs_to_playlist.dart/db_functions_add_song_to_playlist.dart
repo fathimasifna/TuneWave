@@ -33,8 +33,8 @@ bool isPlaylistSong(SongsModel song){
       }
      
   }
-   print(playlistSongsDb.values);
-     print(playlistNotifier.value);
+  // print(playlistSongsDb.values);
+   //  print(playlistNotifier.value);
     playlistNotifier.notifyListeners();
   }
 

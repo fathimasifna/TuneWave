@@ -14,7 +14,7 @@ class PlaylistDb  {
   static Future<void> getAllPlaylist() async {
     playlistNotifier.value.clear();
     playlistNotifier.value.addAll(playlistDb.values);
-    print(playlistNotifier.value);
+//print(playlistNotifier.value);
     playlistNotifier.notifyListeners();
   }
 
