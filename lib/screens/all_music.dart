@@ -103,6 +103,7 @@ class _AllMusicState extends State<AllMusic> {
                     id: musicList[index].id,
                     title: musicList[index].title,
                     subtitle: musicList[index].subtitle,
+                    time: DateTime.now(),
                   );
                   recently.addToRecents(song);
                   final value = MostPlayedModel(

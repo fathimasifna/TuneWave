@@ -12,7 +12,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool notificationEnabled = true;
+ // bool notificationEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -77,25 +77,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () {
                 },
               ),
-              ListTile(
-                title: const Text(
-                  "Notification",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                trailing: Switch(
-                  value: notificationEnabled,
-                  onChanged: (value) {
-                    setState(() {
-                      notificationEnabled = value;
-                    });
-                  },
-                  activeColor: Colors.white,
-                ),
-              ),
+              // ListTile(
+              //   title: const Text(
+              //     "Notification",
+              //     style: TextStyle(
+              //       fontSize: 20,
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              //   trailing: Switch(
+              //     value: notificationEnabled,
+              //     onChanged: (value) {
+              //       setState(() {
+              //         notificationEnabled = value;
+              //       });
+              //     },
+              //     activeColor: Colors.white,
+              //   ),
+              // ),
               GestureDetector(
                 onTap: () {
                   Navigator.push(

@@ -25,6 +25,7 @@ class Recently {
   getRecentSongs() {
     recentSongsDatas = recentMusicDb.values.toList();
     recentlyPlayedNotifier.value.clear();
+    recentSongsDatas.sort((a, b) => a.time!.compareTo(b.time!));
     for (var song in recentSongsDatas) {
       for (var element in allSongsData) {
         if (song.id == element.id) {

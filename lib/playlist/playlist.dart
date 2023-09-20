@@ -64,19 +64,6 @@ class _SongListtState extends State<SongList> {
                         ),
                       );
 
-                      // final song = RecentListModel(
-                      //   id: musicList[index].id,
-                      //   title: musicList[index].title,
-                      //   subtitle: musicList[index].subtitle,
-                      // );
-                      // recently.addToRecents(song);
-                      // final value = MostPlayedModel(
-                      //     id: musicList[index].id,
-                      //     title: musicList[index].title!,
-                      //     uri: musicList[index].audioUri!,
-                      //     subtitle: musicList[index].subtitle);
-                      // addMostlyPlayed(value);
-                      // getAllPlayed();
                     },
                     leading: const CircleAvatar(
                       backgroundImage: AssetImage('assets/images/home.jpg'),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:music_player/playlist/add_songs_to_playlist.dart/db_functions_add_song_to_playlist.dart';
 
@@ -16,7 +18,7 @@ class _ListToListState extends State<ListToList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("name"),
+        title: const Text("Hello...Enjoy"),
         centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -80,15 +82,15 @@ class _ListToListState extends State<ListToList> {
                 trailing: IconButton(
                   icon: const Icon(
                     Icons.delete,
-                    color: Colors.white54, 
+                    color: Colors.white54,
                   ),
                   onPressed: () {
-                  
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          backgroundColor: const Color.fromARGB(255, 40, 32, 51),
+                          backgroundColor:
+                              const Color.fromARGB(255, 40, 32, 51),
                           title: const Text(
                             'Delete Song',
                             style: TextStyle(
@@ -115,7 +117,6 @@ class _ListToListState extends State<ListToList> {
                             ),
                             TextButton(
                               onPressed: () {
-                              
                                 setState(() {
                                   musicList.removeAt(index);
                                 });

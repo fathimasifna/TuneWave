@@ -21,13 +21,14 @@ class RecentListModelAdapter extends TypeAdapter<RecentListModel> {
       id: fields[0] as int?,
       audioUri: fields[2] as String?,
       title: fields[3] as String?,
+      time: fields[4] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecentListModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class RecentListModelAdapter extends TypeAdapter<RecentListModel> {
       ..writeByte(2)
       ..write(obj.audioUri)
       ..writeByte(3)
-      ..write(obj.title);
+      ..write(obj.title)
+      ..writeByte(4)
+      ..write(obj.time);
   }
 
   @override

@@ -14,12 +14,17 @@ class  RecentListModel extends HiveObject {
   @HiveField(3)
   late String? title;
 
+  
+  @HiveField(4)
+  late DateTime? time;
+
     RecentListModel({
     
      this.subtitle,
     this.id,
     this.audioUri,
     required this.title,
+    required this.time,
   });
 
  

@@ -1,3 +1,4 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -35,6 +36,7 @@ bool isPlaylistSong(SongsModel song){
   }
   // print(playlistSongsDb.values);
    //  print(playlistNotifier.value);
+    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
     playlistNotifier.notifyListeners();
   }
 

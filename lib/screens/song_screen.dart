@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../playlist/playlist_screen.dart';
 
+// ignore: must_be_immutable
 class SongScreen extends StatefulWidget {
   SongScreen({Key? key, required this.songModel, required this.musicList})
       : super(key: key);
@@ -48,7 +51,6 @@ class _SongScreenState extends State<SongScreen> {
 
   void playNextSong() {
     if (isShuffle) {
-      // If shuffle is enabled, select a random song from the list
       final randomIndex = Random().nextInt(widget.musicList.length);
       final nextSong = widget.musicList[randomIndex];
       setState(() {
