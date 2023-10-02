@@ -43,7 +43,8 @@ class AllMusicFunctions implements AllMusicDBFunctions {
           id: entry.key,
           title: entry.value.displayNameWOExt,
           subtitle: entry.value.artist,
-          audioUri: entry.value.uri, name: '',
+          audioUri: entry.value.uri,
+          name: '',
         )));
          allSongsData.addAll(musicBox.values.toList());
   }

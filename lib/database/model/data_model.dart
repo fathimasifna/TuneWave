@@ -32,7 +32,16 @@ class SongsModel{
     required String name, 
   });
 
-  get name => null;
+  // get name => null;
 
-  copyWith({required String name}) {}
+  // copyWith({required String name}) {}
+  
+}
+String boxname = 'Songs';
+
+class SongBox {
+  static Box<SongsModel>? _box;
+  static Box<SongsModel> getInstance() {
+    return _box ??= Hive.box(boxname);
+  }
 }

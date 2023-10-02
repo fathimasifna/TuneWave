@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print  
 
 import 'package:flutter/material.dart';
 import 'package:music_player/database/fuctions/all_music_db_functions.dart';
@@ -34,7 +34,6 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   // ignore: unused_element
-
 
   void _filterMusicList(String query) {
     if (query.isEmpty) {
@@ -113,6 +112,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       backgroundImage: AssetImage('assets/images/home.jpg'),
                     ),
                     onTap: () {
+                      FocusScopeNode currentfocus = FocusScope.of(context);
+                      if (!currentfocus.hasPrimaryFocus) {
+                        currentfocus.unfocus();
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(

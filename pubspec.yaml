@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.6 <3.10.0'
+  sdk: ">=3.0.6 <3.10.0"
   # sdk: '>=2.0.0 <3.0.0'
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  device_info_plus: ^9.0.3
   flutter:
     sdk: flutter
   google_nav_bar: ^5.0.6
@@ -36,11 +37,10 @@ dependencies:
   hive_flutter: ^1.1.0
   just_audio: ^0.9.34
   on_audio_query: ^2.9.0
-  permission_handler: ^9.2.0
+  permission_handler: ^11.0.0
 dev_dependencies:
   audioplayers: ^4.0.1
-  path_provider: ^2.0.2
-  # flutter_launcher_icons: ^0.13.1 
+  # flutter_launcher_icons: ^0.13.1
   build_runner: ^2.1.5
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -49,16 +49,16 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-# flutter_launcher_icons:
-#   android: "launcher_icon"
-#   ios: true
-#   image_path: "assets/images/icon.png"
-#   min_sdk_android: 21 
-
+  # flutter_launcher_icons:
+  #   android: "launcher_icon"
+  #   ios: true
+  #   image_path: "assets/images/icon.png"
+  #   min_sdk_android: 21
   flutter_test:
     sdk: flutter
   hive_generator: ^1.1.1
   hive_service: ^0.0.1
+  path_provider: ^2.0.2
   provider: ^6.0.5
 
 # For information on the generic Dart part of this file, see the

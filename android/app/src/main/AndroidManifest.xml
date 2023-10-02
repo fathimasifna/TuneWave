@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.music_player">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--for android 13 and above-->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+<!-- for below android 13-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <!-- <uses-permission

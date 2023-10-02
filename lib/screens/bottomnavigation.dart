@@ -17,7 +17,7 @@ class _BottomNavigation extends State<BottomNavigation> {
   int currentIndex = 0;
   static final List<Widget> _widgetOptions = [
     const HomeScreen(),
-   const  SearchScreen(),
+    const SearchScreen(),
     const LibraryScreen(),
   ];
 
